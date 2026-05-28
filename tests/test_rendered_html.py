@@ -35,3 +35,5 @@ def test_project_management_html_has_expected_pages_and_anchors():
     assert "index-4" in parser.ids
     assert "project-01-summary" in parser.ids
     assert "project-99-actions" in parser.ids
+    assert "&#34" not in html
+    assert 'font-family: "Inter"' in html

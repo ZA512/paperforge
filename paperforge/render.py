@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import tempfile
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -45,12 +47,45 @@ def write_output(request: RenderRequest, output: Path, html_only: bool = False) 
         output.write_text(html, encoding="utf-8")
         return
 
+    executable = ROOT / "weasyprint.exe"
+    if executable.is_file():
+        write_pdf_with_executable(executable, html, output)
+        return
+
     try:
         from weasyprint import HTML
     except (ImportError, OSError) as exc:
         raise RuntimeError(
             "WeasyPrint cannot start. Use --html-only, install Python dependencies, "
-            "and make sure native WeasyPrint libraries are available on this system."
+            "make sure native WeasyPrint libraries are available on this system, "
+            "or put weasyprint.exe at the project root."
         ) from exc
 
     HTML(string=html, base_url=str(TEMPLATE_ROOT)).write_pdf(str(output))
+
+
+def write_pdf_with_executable(executable: Path, html: str, output: Path) -> None:
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        suffix=".html",
+        encoding="utf-8",
+        delete=False,
+        dir=ROOT / "dist",
+    ) as handle:
+        handle.write(html)
+        html_path = Path(handle.name)
+
+    try:
+        result = subprocess.run(
+            [str(executable), str(html_path), str(output)],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    finally:
+        html_path.unlink(missing_ok=True)
+
+    if result.returncode != 0:
+        details = (result.stderr or result.stdout).strip()
+        raise RuntimeError(f"weasyprint.exe failed with exit code {result.returncode}: {details}")

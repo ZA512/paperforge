@@ -98,3 +98,7 @@ natives Pango/GTK. Si la generation PDF echoue avec `libgobject-2.0-0`, le rendu
 HTML reste disponible avec `--html-only`. Il faut installer les dependances
 natives indiquees par la documentation WeasyPrint avant de relancer la conversion
 PDF.
+
+Alternative pratique: placer l'executable officiel `weasyprint.exe` a la racine
+du projet. Paperforge l'utilise automatiquement en fallback si la librairie
+Python WeasyPrint ne peut pas charger les DLL natives.

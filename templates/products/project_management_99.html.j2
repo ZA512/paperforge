@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>{{ title }}</title>
-  <style>{{ inline_css }}</style>
+  <style>{{ inline_css|safe }}</style>
 </head>
 <body>
   <section class="page" id="home">
@@ -65,7 +65,7 @@
     <p class="muted" style="margin-bottom: 12px;">Premiere colonne: W, B ou D. La page sert a voir ce qui necessite relance, deblocage ou memoire.</p>
     <table class="table">
       <thead><tr><th style="width: 70px;">Type</th><th style="width: 95px;">Date</th><th style="width: 120px;">Projet</th><th>Sujet / element</th><th style="width: 180px;">Qui / action attendue</th><th style="width: 155px;">Relance / impact</th></tr></thead>
-      <tbody>{% for _ in range(13) %}<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+      <tbody>{% for _ in range(11) %}<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
     </table>
     <div class="footer"><span>Radar de pilotage {{ page_no }}</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
   </section>
@@ -77,7 +77,7 @@
     <p class="muted" style="margin-bottom: 12px;">Cette page n'est pas un second index: elle garde visibles les sujets chauds de la semaine ou du mois.</p>
     <table class="table">
       <thead><tr><th style="width: 150px;">Projet</th><th>Sujet</th><th>Pourquoi prioritaire</th><th style="width: 190px;">Prochaine action</th><th style="width: 110px;">Echeance</th></tr></thead>
-      <tbody>{% for _ in range(13) %}<tr><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+      <tbody>{% for _ in range(11) %}<tr><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
     </table>
     <div class="footer"><span>Projets prioritaires</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
   </section>
@@ -86,7 +86,7 @@
   <section class="page" id="index-{{ loop.index }}">
     {% include "shared/topline.html.j2" %}
     <h2>Index projets {{ group[0].code }}-{{ group[-1].code }}</h2>
-    <table class="table">
+    <table class="table compact">
       <thead><tr><th style="width: 62px;">N</th><th>Projet</th><th style="width: 120px;">Etat</th></tr></thead>
       <tbody>
         {% for project in group %}
@@ -116,13 +116,13 @@
     <div class="field-line"><span>Projet :</span><span class="line"></span><span>Domaine :</span><span class="line"></span></div>
     <div class="field-line"><span>Priorite :</span><span class="line"></span><span>Statut :</span><span class="line"></span></div>
     <div class="grid two">
-      <div class="panel"><h3>Objectif en 2 lignes</h3><div class="notes" style="height: 96px;"></div></div>
-      <div class="panel"><h3>Contexte / but</h3><div class="notes" style="height: 96px;"></div></div>
+      <div class="panel"><h3>Objectif en 2 lignes</h3><div class="notes" style="height: 72px;"></div></div>
+      <div class="panel"><h3>Contexte / but</h3><div class="notes" style="height: 72px;"></div></div>
     </div>
     <h3 style="margin-top: 12px;">Points ouverts / notes</h3>
     <table class="table">
       <thead><tr><th style="width: 70px;">Type</th><th style="width: 95px;">Date</th><th>Sujet</th><th style="width: 220px;">Suite</th></tr></thead>
-      <tbody>{% for _ in range(5) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+      <tbody>{% for _ in range(4) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
     </table>
     <div class="footer"><span>Projet {{ project.code }} - Synthese</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
   </section>
@@ -136,7 +136,7 @@
     <div class="symbol-row">{% for item in symbols %}<span><span class="symbol">{{ item.symbol }}</span> {{ item.label|lower }}</span>{% endfor %}</div>
     <table class="table">
       <thead><tr><th style="width: 70px;">Type</th><th style="width: 95px;">Date</th><th>Action / note / question / attente / blocage / decision</th><th style="width: 210px;">Suite / relance</th></tr></thead>
-      <tbody>{% for _ in range(14) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+      <tbody>{% for _ in range(11) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
     </table>
     <div class="footer"><span>Projet {{ project.code }} - Actions / journal</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
   </section>

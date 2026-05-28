@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <style>{{ inline_css }}</style>
+</head>
+<body>
+  <section class="page" id="home">
+    <div class="topline">
+      <div class="kicker">{{ metadata.format }}</div>
+      <nav class="nav">
+        {% for link in nav %}<a href="#{{ link.target }}">{{ link.label }}</a>{% endfor %}
+      </nav>
+    </div>
+    <h1>{{ title }}</h1>
+    <p class="lead">{{ metadata.subtitle }}</p>
+    <div class="grid home-map">
+      <a class="panel" href="#journal-1"><h3>Journal</h3><p class="muted">Capture sans casser le rythme.</p></a>
+      <a class="panel" href="#radar-1"><h3>Radar</h3><p class="muted">W / B / D a surveiller.</p></a>
+      <a class="panel" href="#priorities"><h3>Priorites</h3><p class="muted">Sujets chauds de la semaine.</p></a>
+      <a class="panel" href="#index-1"><h3>Index projets</h3><p class="muted">Acces aux projets 01 a {{ "%02d"|format(options.project_count) }}.</p></a>
+    </div>
+    <div class="footer"><span>Accueil</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+
+  <section class="page" id="method">
+    {% include "shared/topline.html.j2" %}
+    <h2>Methode / legende simple et stable</h2>
+    <table class="table">
+      <thead><tr><th style="width: 90px;">Symbole</th><th style="width: 170px;">Sens</th><th>Regle</th></tr></thead>
+      <tbody>
+        {% for item in symbols %}
+        <tr><td><span class="symbol">{{ item.symbol }}</span></td><td>{{ item.label }}</td><td>{{ item.rule }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="grid two" style="margin-top: 14px;">
+      <div class="panel"><h3>Rituel journal</h3><p class="muted">Noter vite, puis reporter uniquement ce qui merite un suivi.</p></div>
+      <div class="panel"><h3>Rituel projet</h3><p class="muted">Revoir la synthese, actualiser le statut, puis alimenter le journal projet.</p></div>
+    </div>
+    <div class="footer"><span>Methode</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+
+  {% for page_no in journal_pages %}
+  <section class="page" id="journal-{{ page_no }}">
+    {% include "shared/topline.html.j2" %}
+    <h2>Journal du jour {{ page_no }}/{{ options.journal_pages }}</h2>
+    <div class="field-line"><span>Date :</span><span class="line"></span><span>Focus :</span><span class="line"></span></div>
+    <div class="symbol-row">{% for item in symbols %}<span><span class="symbol">{{ item.symbol }}</span> {{ item.label|lower }}</span>{% endfor %}</div>
+    <table class="table">
+      <thead><tr><th style="width: 115px;">Type</th><th style="width: 135px;">Projet</th><th>Element a reporter</th><th style="width: 190px;">Suite</th></tr></thead>
+      <tbody>{% for _ in range(10) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+    </table>
+    <h3 style="margin-top: 12px;">Notes / synthese de fin de journee</h3>
+    <div class="notes"></div>
+    <div class="footer"><span>Journal du jour {{ page_no }}</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+  {% endfor %}
+
+  {% for page_no in radar_pages %}
+  <section class="page" id="radar-{{ page_no }}">
+    {% include "shared/topline.html.j2" %}
+    <h2>Radar de pilotage {{ page_no }}/{{ options.radar_pages }}</h2>
+    <p class="muted" style="margin-bottom: 12px;">Premiere colonne: W, B ou D. La page sert a voir ce qui necessite relance, deblocage ou memoire.</p>
+    <table class="table">
+      <thead><tr><th style="width: 70px;">Type</th><th style="width: 95px;">Date</th><th style="width: 120px;">Projet</th><th>Sujet / element</th><th style="width: 180px;">Qui / action attendue</th><th style="width: 155px;">Relance / impact</th></tr></thead>
+      <tbody>{% for _ in range(13) %}<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+    </table>
+    <div class="footer"><span>Radar de pilotage {{ page_no }}</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+  {% endfor %}
+
+  <section class="page" id="priorities">
+    {% include "shared/topline.html.j2" %}
+    <h2>Projets prioritaires</h2>
+    <p class="muted" style="margin-bottom: 12px;">Cette page n'est pas un second index: elle garde visibles les sujets chauds de la semaine ou du mois.</p>
+    <table class="table">
+      <thead><tr><th style="width: 150px;">Projet</th><th>Sujet</th><th>Pourquoi prioritaire</th><th style="width: 190px;">Prochaine action</th><th style="width: 110px;">Echeance</th></tr></thead>
+      <tbody>{% for _ in range(13) %}<tr><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+    </table>
+    <div class="footer"><span>Projets prioritaires</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+
+  {% for group in index_groups %}
+  <section class="page" id="index-{{ loop.index }}">
+    {% include "shared/topline.html.j2" %}
+    <h2>Index projets {{ group[0].code }}-{{ group[-1].code }}</h2>
+    <table class="table">
+      <thead><tr><th style="width: 62px;">N</th><th>Projet</th><th style="width: 120px;">Etat</th></tr></thead>
+      <tbody>
+        {% for project in group %}
+        <tr>
+          <td><a class="index-number" href="#project-{{ project.code }}-summary">{{ project.code }}</a></td>
+          <td></td>
+          <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="footer"><span>Index projets {{ group[0].code }}-{{ group[-1].code }}</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+  {% endfor %}
+
+  {% for project in projects %}
+  <section class="page" id="project-{{ project.code }}-summary">
+    {% include "shared/topline.html.j2" %}
+    <div class="topline" style="margin-top: -4px;">
+      <h2>Projet {{ project.code }} - Synthese</h2>
+      <div class="page-actions">
+        {% if not loop.first %}<a href="#project-{{ "%02d"|format(project.number - 1) }}-summary">&lt; precedent</a>{% endif %}
+        {% if not loop.last %}<a href="#project-{{ "%02d"|format(project.number + 1) }}-summary">suivant &gt;</a>{% endif %}
+        <a href="#project-{{ project.code }}-actions">actions</a>
+      </div>
+    </div>
+    <div class="field-line"><span>Projet :</span><span class="line"></span><span>Domaine :</span><span class="line"></span></div>
+    <div class="field-line"><span>Priorite :</span><span class="line"></span><span>Statut :</span><span class="line"></span></div>
+    <div class="grid two">
+      <div class="panel"><h3>Objectif en 2 lignes</h3><div class="notes" style="height: 96px;"></div></div>
+      <div class="panel"><h3>Contexte / but</h3><div class="notes" style="height: 96px;"></div></div>
+    </div>
+    <h3 style="margin-top: 12px;">Points ouverts / notes</h3>
+    <table class="table">
+      <thead><tr><th style="width: 70px;">Type</th><th style="width: 95px;">Date</th><th>Sujet</th><th style="width: 220px;">Suite</th></tr></thead>
+      <tbody>{% for _ in range(5) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+    </table>
+    <div class="footer"><span>Projet {{ project.code }} - Synthese</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+
+  <section class="page" id="project-{{ project.code }}-actions">
+    {% include "shared/topline.html.j2" %}
+    <div class="topline" style="margin-top: -4px;">
+      <h2>Projet {{ project.code }} - Actions / journal</h2>
+      <div class="page-actions"><a href="#project-{{ project.code }}-summary">synthese</a></div>
+    </div>
+    <div class="symbol-row">{% for item in symbols %}<span><span class="symbol">{{ item.symbol }}</span> {{ item.label|lower }}</span>{% endfor %}</div>
+    <table class="table">
+      <thead><tr><th style="width: 70px;">Type</th><th style="width: 95px;">Date</th><th>Action / note / question / attente / blocage / decision</th><th style="width: 210px;">Suite / relance</th></tr></thead>
+      <tbody>{% for _ in range(14) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
+    </table>
+    <div class="footer"><span>Projet {{ project.code }} - Actions / journal</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+  {% endfor %}
+</body>
+</html>

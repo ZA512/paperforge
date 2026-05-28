@@ -1,0 +1,10 @@
+.venv/
+.vscode/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/*.pdf
+dist/*.html
+dist/*.log
+configs/generated_*.json

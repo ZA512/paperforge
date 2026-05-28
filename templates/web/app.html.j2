@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paperforge</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Paperforge</p>
+        <h1>Atelier de carnets PDF</h1>
+      </div>
+      <div class="status-strip">
+        <span>HTML/CSS</span>
+        <span>Jinja2</span>
+        <span>WeasyPrint</span>
+      </div>
+    </header>
+
+    <form class="workspace" method="post" action="/generate">
+      <section class="pane product-pane" aria-labelledby="product-title">
+        <div class="pane-head">
+          <h2 id="product-title">Produit</h2>
+          <span class="count">{{ products|length }}</span>
+        </div>
+        <div class="choice-list">
+          {% for product in products %}
+          {% set selected = values.get('product', default_product) == product.slug %}
+          <label class="choice{% if selected %} is-selected{% endif %}">
+            <input type="radio" name="product" value="{{ product.slug }}" {% if selected %}checked{% endif %}>
+            <span>
+              <strong>{{ product.label }}</strong>
+              <small>{{ product.slug }}</small>
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="pane settings-pane" aria-labelledby="settings-title">
+        <div class="pane-head">
+          <h2 id="settings-title">Parametrage</h2>
+          <span class="count">V1</span>
+        </div>
+        <div class="field-grid">
+          <label class="field wide">
+            <span>Titre</span>
+            <input name="title" value="{{ values.get('title', 'Carnet de pilotage projets') }}">
+          </label>
+          <label class="field">
+            <span>Format</span>
+            <input name="format" value="{{ values.get('format', 'tablette 16:10') }}">
+          </label>
+          <label class="field wide">
+            <span>Sous-titre</span>
+            <input name="subtitle" value="{{ values.get('subtitle', 'Capture rapide, radar de relance, index hyperlie et 99 projets en deux pages.') }}">
+          </label>
+
+          {% for product in products %}
+            {% for option in product.options %}
+            <label class="field">
+              <span>{{ option.label }}</span>
+              <input
+                name="{{ option.key }}"
+                type="{% if option.option_type == 'number' %}number{% else %}text{% endif %}"
+                value="{{ values.get(option.key, option.default) }}"
+                {% if option.min_value is not none %}min="{{ option.min_value }}"{% endif %}
+                {% if option.max_value is not none %}max="{{ option.max_value }}"{% endif %}
+              >
+            </label>
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+        <div class="nomenclature" aria-label="Nomenclature">
+          <span>• Action</span>
+          <span>- Note</span>
+          <span>? Question</span>
+          <span>! Important</span>
+          <span>W Attente</span>
+          <span>B Blocage</span>
+          <span>D Decision</span>
+        </div>
+      </section>
+
+      <section class="pane theme-pane" aria-labelledby="theme-title">
+        <div class="pane-head">
+          <h2 id="theme-title">Theme</h2>
+          <span class="count">{{ themes|length }}</span>
+        </div>
+        <div class="theme-list">
+          {% for theme in themes %}
+          {% set selected = values.get('theme', default_theme) == theme.slug %}
+          <label class="theme-choice{% if selected %} is-selected{% endif %}">
+            <input type="radio" name="theme" value="{{ theme.slug }}" {% if selected %}checked{% endif %}>
+            <span class="theme-swatch"></span>
+            <span>
+              <strong>{{ theme.label }}</strong>
+              <small>{{ theme.page_size }}</small>
+            </span>
+          </label>
+          {% endfor %}
+        </div>
+
+        <div class="export-box">
+          <h2>Export</h2>
+          <div class="actions">
+            <button name="action" value="html" type="submit">Generer HTML</button>
+            <button name="action" value="pdf" type="submit">Generer PDF</button>
+            <button name="action" value="command" type="submit" class="ghost">Commande</button>
+          </div>
+        </div>
+
+        {% if result %}
+        <aside class="result result-{{ result.status }}">
+          <strong>{{ result.message }}</strong>
+          {% if result.html_url %}<a href="{{ result.html_url }}" target="_blank">Ouvrir HTML</a>{% endif %}
+          {% if result.pdf_url %}<a href="{{ result.pdf_url }}" target="_blank">Ouvrir PDF</a>{% endif %}
+          <code>{{ result.command }}</code>
+        </aside>
+        {% endif %}
+      </section>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "product": "project_management_99",
+  "theme": "pro_landscape",
+  "title": "Carnet de pilotage projets",
+  "options": {
+    "project_count": 99,
+    "journal_pages": 2,
+    "radar_pages": 2
+  },
+  "metadata": {
+    "format": "tablette 16:10",
+    "subtitle": "Capture rapide, radar de relance, index hyperlie et 99 projets en deux pages."
+  }
+}

@@ -1,0 +1,6 @@
+<div class="topline">
+  <div class="kicker">{{ title }}</div>
+  <nav class="nav">
+    {% for link in nav %}<a href="#{{ link.target }}">{{ link.label }}</a>{% endfor %}
+  </nav>
+</div>

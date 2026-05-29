@@ -235,7 +235,9 @@ def compute_layout(page_width: int, page_height: int) -> dict:
     table_h = page_height - pad_top - pad_bottom - topbar_h - title_h - footer_h - (gap * 2)
 
     row_h = round(max(52, min(112, page_height * 0.052)))
+    project_row_h = round(max(34, min(70, page_height * 0.032)))
     header_h = round(max(30, min(52, row_h * 0.48)))
+    project_header_h = round(max(26, min(42, project_row_h * 0.58)))
     table_h = max(row_h * 8, table_h)
     index_row_h = max(24, (table_h - header_h) // 25)
 
@@ -243,7 +245,12 @@ def compute_layout(page_width: int, page_height: int) -> dict:
         available = max(row_h * minimum, table_h - extra_reserved - header_h)
         return max(minimum, min(maximum, available // row_h))
 
-    open_points_reserved = round(max(210, min(430, page_height * 0.24)))
+    project_summary_reserved = (
+        project_row_h
+        + round(max(120, min(230, page_height * 0.105)))
+        + h3_height(short_side)
+        + (gap * 4)
+    )
 
     return {
         "pad_x": pad_x,
@@ -255,8 +262,10 @@ def compute_layout(page_width: int, page_height: int) -> dict:
         "gap": gap,
         "table_h": table_h,
         "row_h": row_h,
+        "project_row_h": project_row_h,
         "index_row_h": index_row_h,
         "header_h": header_h,
+        "project_header_h": project_header_h,
         "font_base": round(max(13, min(22, 14 * scale))),
         "font_small": round(max(10, min(16, 11 * scale))),
         "h1": round(max(42, min(82, short_side * 0.05))),
@@ -270,11 +279,22 @@ def compute_layout(page_width: int, page_height: int) -> dict:
             "journal": rows(),
             "radar": rows(minimum=8, maximum=28),
             "priorities": rows(minimum=8, maximum=28),
-            "actions": rows(minimum=9, maximum=30),
-            "open_points": rows(extra_reserved=open_points_reserved, minimum=4, maximum=12),
+            "actions": max(12, min(44, (table_h - project_header_h) // project_row_h)),
+            "open_points": max(
+                8,
+                min(
+                    28,
+                    (table_h - project_summary_reserved - project_header_h)
+                    // project_row_h,
+                ),
+            ),
             "index": 25,
         },
     }
+
+
+def h3_height(short_side: int) -> int:
+    return round(max(17, min(28, short_side * 0.018)))
 
 
 def default_nav() -> tuple[NavLink, ...]:

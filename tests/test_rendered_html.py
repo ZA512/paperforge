@@ -35,6 +35,9 @@ def test_project_management_html_has_expected_pages_and_anchors():
     assert "index-4" in parser.ids
     assert "project-01-summary" in parser.ids
     assert "project-99-actions" in parser.ids
+    assert "Projet 01 · Actions" in html
+    assert ">Actions</th>" in html
+    assert "Contexte" not in html
     assert "&#34" not in html
     assert 'font-family: "Segoe UI"' in html
     assert "clamp(" not in html

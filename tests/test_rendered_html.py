@@ -37,6 +37,8 @@ def test_project_management_html_has_expected_pages_and_anchors():
     assert "project-99-actions" in parser.ids
     assert "&#34" not in html
     assert 'font-family: "Segoe UI"' in html
+    assert "clamp(" not in html
+    assert "var(--" not in html
 
 
 def test_page_format_changes_pdf_css_size():
@@ -57,8 +59,8 @@ def test_page_format_changes_pdf_css_size():
     )
 
     assert "size: 595px 842px;" in html
-    assert "height: var(--page-height);" in html
-    assert "width: var(--page-width);" in html
+    assert "height: 842px;" in html
+    assert "width: 595px;" in html
     assert 'class="format-a4 orientation-portrait"' in html
 
 

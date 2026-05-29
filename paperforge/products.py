@@ -130,7 +130,7 @@ def build_context(request: RenderRequest) -> dict:
         )
         metadata = dict(request.metadata)
         metadata["format"] = page_format["metadata_label"]
-        row_counts = compute_row_counts(page_format["height_px"])
+        layout = compute_layout(page_format["width_px"], page_format["height_px"])
         projects = [ProjectSlot(number=index) for index in range(1, project_count + 1)]
         return {
             "product": asdict(product),
@@ -139,7 +139,8 @@ def build_context(request: RenderRequest) -> dict:
             "options": options,
             "metadata": metadata,
             "page_format": page_format,
-            "row_counts": row_counts,
+            "layout": layout,
+            "row_counts": layout["row_counts"],
             "nav": default_nav(),
             "symbols": SYMBOLS,
             "journal_pages": range(1, int(options["journal_pages"]) + 1),
@@ -219,13 +220,60 @@ def resolve_page_format(slug: str, orientation: str) -> dict:
     }
 
 
-def compute_row_counts(page_height: int) -> dict[str, int]:
+def compute_layout(page_width: int, page_height: int) -> dict:
+    short_side = min(page_width, page_height)
+    long_side = max(page_width, page_height)
+    scale = short_side / 800
+
+    pad_x = round(max(36, min(78, short_side * 0.045)))
+    pad_top = round(max(34, min(72, page_height * 0.04)))
+    pad_bottom = round(max(34, min(72, page_height * 0.04)))
+    topbar_h = round(max(28, min(44, page_height * 0.022)))
+    title_h = round(max(58, min(104, page_height * 0.052)))
+    footer_h = round(max(22, min(36, page_height * 0.018)))
+    gap = round(max(16, min(34, page_height * 0.018)))
+    table_h = page_height - pad_top - pad_bottom - topbar_h - title_h - footer_h - (gap * 2)
+
+    row_h = round(max(52, min(112, page_height * 0.052)))
+    header_h = round(max(30, min(52, row_h * 0.48)))
+    table_h = max(row_h * 8, table_h)
+    index_row_h = max(24, (table_h - header_h) // 25)
+
+    def rows(extra_reserved: int = 0, minimum: int = 8, maximum: int = 28) -> int:
+        available = max(row_h * minimum, table_h - extra_reserved - header_h)
+        return max(minimum, min(maximum, available // row_h))
+
+    open_points_reserved = round(max(210, min(430, page_height * 0.24)))
+
     return {
-        "journal": max(12, min(28, (page_height - 260) // 38)),
-        "radar": max(12, min(30, (page_height - 220) // 36)),
-        "priorities": max(12, min(30, (page_height - 220) // 36)),
-        "actions": max(14, min(32, (page_height - 220) // 36)),
-        "open_points": max(5, min(14, (page_height - 520) // 42)),
+        "pad_x": pad_x,
+        "pad_top": pad_top,
+        "pad_bottom": pad_bottom,
+        "topbar_h": topbar_h,
+        "title_h": title_h,
+        "footer_h": footer_h,
+        "gap": gap,
+        "table_h": table_h,
+        "row_h": row_h,
+        "index_row_h": index_row_h,
+        "header_h": header_h,
+        "font_base": round(max(13, min(22, 14 * scale))),
+        "font_small": round(max(10, min(16, 11 * scale))),
+        "h1": round(max(42, min(82, short_side * 0.05))),
+        "h2": round(max(28, min(54, short_side * 0.036))),
+        "h3": round(max(17, min(28, short_side * 0.018))),
+        "lead": round(max(16, min(28, short_side * 0.018))),
+        "home_card_h": round(max(120, min(260, long_side * 0.12))),
+        "summary_note_h": round(max(120, min(230, page_height * 0.105))),
+        "note_line": round(max(34, min(64, row_h * 0.58))),
+        "row_counts": {
+            "journal": rows(),
+            "radar": rows(minimum=8, maximum=28),
+            "priorities": rows(minimum=8, maximum=28),
+            "actions": rows(minimum=9, maximum=30),
+            "open_points": rows(extra_reserved=open_points_reserved, minimum=4, maximum=12),
+            "index": 25,
+        },
     }
 
 

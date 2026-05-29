@@ -44,14 +44,14 @@
   </section>
 
   {% for page_no in journal_pages %}
-  <section class="page table-page" id="journal-{{ page_no }}">
+  <section class="page table-page journal-page" id="journal-{{ page_no }}">
     {% include "shared/topline.html.j2" %}
     <main class="page-body">
       <div class="page-title-row">
         <h2>Journal {{ page_no }}/{{ options.journal_pages }}</h2>
         <div class="inline-fields"><span>Date</span><i></i><span>Focus</span><i></i></div>
       </div>
-      <div class="table-fill">
+      <div class="table-fill journal-fill">
         <table class="table writing-table">
           <thead><tr><th style="width: 9%;">Type</th><th style="width: 14%;">Projet</th><th>Element</th><th style="width: 24%;">Suite</th></tr></thead>
           <tbody>{% for _ in range(row_counts.journal) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
@@ -63,11 +63,11 @@
   {% endfor %}
 
   {% for page_no in radar_pages %}
-  <section class="page table-page" id="radar-{{ page_no }}">
+  <section class="page table-page radar-page" id="radar-{{ page_no }}">
     {% include "shared/topline.html.j2" %}
     <main class="page-body">
       <div class="page-title-row"><h2>Radar {{ page_no }}/{{ options.radar_pages }}</h2><p>W attente · B blocage · D decision</p></div>
-      <div class="table-fill">
+      <div class="table-fill radar-fill">
         <table class="table writing-table">
           <thead><tr><th style="width: 8%;">Type</th><th style="width: 12%;">Date</th><th style="width: 14%;">Projet</th><th>Sujet</th><th style="width: 22%;">Attendu</th><th style="width: 18%;">Relance</th></tr></thead>
           <tbody>{% for _ in range(row_counts.radar) %}<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
@@ -78,11 +78,11 @@
   </section>
   {% endfor %}
 
-  <section class="page table-page" id="priorities">
+  <section class="page table-page priorities-page" id="priorities">
     {% include "shared/topline.html.j2" %}
     <main class="page-body">
       <div class="page-title-row"><h2>Priorites</h2><p>Sujets chauds de la semaine ou du mois</p></div>
-      <div class="table-fill">
+      <div class="table-fill priorities-fill">
         <table class="table writing-table">
           <thead><tr><th style="width: 18%;">Projet</th><th>Sujet</th><th style="width: 24%;">Prochaine action</th><th style="width: 14%;">Echeance</th></tr></thead>
           <tbody>{% for _ in range(row_counts.priorities) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
@@ -93,11 +93,11 @@
   </section>
 
   {% for group in index_groups %}
-  <section class="page table-page" id="index-{{ loop.index }}">
+  <section class="page table-page index-page" id="index-{{ loop.index }}">
     {% include "shared/topline.html.j2" %}
     <main class="page-body">
       <div class="page-title-row"><h2>Index {{ group[0].code }}-{{ group[-1].code }}</h2><p>N / Projet / Etat</p></div>
-      <div class="table-fill">
+      <div class="table-fill index-fill">
         <table class="table index-table">
           <thead><tr><th style="width: 10%;">N</th><th>Projet</th><th style="width: 22%;">Etat</th></tr></thead>
           <tbody>
@@ -134,7 +134,7 @@
         <div><h3>Contexte</h3><div class="note-lines"></div></div>
       </div>
       <h3>Points ouverts</h3>
-      <div class="table-fill">
+      <div class="table-fill open-points-fill">
         <table class="table writing-table">
           <thead><tr><th style="width: 10%;">Type</th><th style="width: 14%;">Date</th><th>Sujet</th><th style="width: 28%;">Suite</th></tr></thead>
           <tbody>{% for _ in range(row_counts.open_points) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>
@@ -145,7 +145,7 @@
   </section>
 
   {% if options.pages_per_project >= 2 %}
-  <section class="page table-page" id="project-{{ project.code }}-actions">
+  <section class="page table-page actions-page" id="project-{{ project.code }}-actions">
     {% include "shared/topline.html.j2" %}
     <main class="page-body">
       <div class="page-title-row">
@@ -155,7 +155,7 @@
           {% if options.pages_per_project >= 3 %}<a href="#project-{{ project.code }}-extra-3">Notes</a>{% endif %}
         </div>
       </div>
-      <div class="table-fill">
+      <div class="table-fill actions-fill">
         <table class="table writing-table">
           <thead><tr><th style="width: 8%;">Type</th><th style="width: 12%;">Date</th><th>Action / note / question / attente / blocage / decision</th><th style="width: 24%;">Suite</th></tr></thead>
           <tbody>{% for _ in range(row_counts.actions) %}<tr><td></td><td></td><td></td><td></td></tr>{% endfor %}</tbody>

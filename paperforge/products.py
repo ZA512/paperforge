@@ -80,7 +80,7 @@ PROJECT_MANAGEMENT_99 = ProductSpec(
         ),
         ProductOption(
             key="radar_pages",
-            label="Pages radar",
+            label="Pages rappel",
             option_type="number",
             default=2,
             min_value=1,
@@ -302,7 +302,7 @@ def default_nav() -> tuple[NavLink, ...]:
         NavLink("Accueil", "home"),
         NavLink("Methode", "method"),
         NavLink("Journal", "journal-1"),
-        NavLink("Radar", "radar-1"),
+        NavLink("Rappel", "radar-1"),
         NavLink("Priorites", "priorities"),
         NavLink("Index", "index-1"),
     )

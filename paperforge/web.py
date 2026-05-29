@@ -12,6 +12,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from .models import RenderRequest
 from .products import (
+    COVER_STYLES,
     FORMAT_PRESETS,
     ORIENTATION_LABELS,
     PRODUCTS,
@@ -84,7 +85,9 @@ class PaperforgeHandler(BaseHTTPRequestHandler):
                     for slug, preset in FORMAT_PRESETS.items()
                 },
                 "orientation": ORIENTATION_LABELS,
+                "cover_style": COVER_STYLES,
             },
+            cover_styles=COVER_STYLES,
             values=values or {},
             result=result,
         )

@@ -45,6 +45,7 @@ L'interface permet de:
 - modifier titre, format, orientation, sous-titre et quantites de pages;
 - choisir le nombre de pages par projet;
 - choisir le theme;
+- choisir le style et la couleur de la couverture;
 - generer un HTML;
 - tenter une generation PDF;
 - produire une commande CLI rejouable.
@@ -81,6 +82,13 @@ Themes disponibles:
 - `sage_focus` - Sauge focus;
 - `graphite_lime` - Graphite lime;
 - `copper_workshop` - Atelier cuivre.
+- `terminal_green` - Terminal vert;
+- `cyberpunk_neon` - Cyberpunk neon;
+- `midnight_ops` - Midnight ops.
+
+La premiere page du PDF est une couverture. Elle est controlee par les options
+`cover_style` et `cover_color`; les pages de navigation et d'ecriture commencent
+ensuite a l'accueil.
 
 ## Structure
 

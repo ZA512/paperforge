@@ -31,7 +31,8 @@ def test_project_management_html_has_expected_pages_and_anchors():
     parser = IdCollector()
     parser.feed(html)
 
-    assert parser.sections == 209
+    assert parser.sections == 210
+    assert "cover" in parser.ids
     assert "home" in parser.ids
     assert "index-4" in parser.ids
     assert "project-01-summary" in parser.ids
@@ -40,6 +41,8 @@ def test_project_management_html_has_expected_pages_and_anchors():
     assert 'href="#project-01-actions">2/2</a>' in html
     assert "<span>1/2</span>" in html
     assert 'href="#project-01-actions">Actions</a>' not in html
+    assert 'class="page cover-page cover-solid" id="cover"' in html
+    assert "background: #176f75;" in html
     assert ">Actions</th>" in html
     assert "Nom du projet" in html
     assert "Date relance" in html
@@ -93,7 +96,7 @@ def test_pages_per_project_controls_project_page_count():
     parser = IdCollector()
     parser.feed(html)
 
-    assert parser.sections == 15
+    assert parser.sections == 16
     assert "project-01-summary" in parser.ids
     assert "project-01-actions" in parser.ids
     assert "project-01-extra-3" in parser.ids
@@ -131,6 +134,8 @@ def test_all_pdf_themes_render_with_their_tokens():
                 theme=slug,
                 title="Carnet",
                 options={
+                    "cover_style": "cyberpunk",
+                    "cover_color": "#ff00aa",
                     "project_count": 1,
                     "pages_per_project": 1,
                     "journal_pages": 1,
@@ -141,3 +146,5 @@ def test_all_pdf_themes_render_with_their_tokens():
 
         assert theme.tokens["accent"] in html
         assert theme.tokens["header_bg"] in html
+        assert "cover-cyberpunk" in html
+        assert "#ff00aa" in html

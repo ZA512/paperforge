@@ -7,6 +7,7 @@
   --teal: #126a70;
   --rust: #c84f35;
   --blue: #2c4052;
+  --cover-choice-color: #176f75;
   --shadow: 0 24px 70px rgba(23, 32, 38, 0.14);
 }
 
@@ -149,7 +150,10 @@ h2 {
 }
 
 .choice.is-selected,
-.theme-choice.is-selected {
+.theme-choice.is-selected,
+.cover-choice.is-selected,
+.theme-choice:has(input:checked),
+.cover-choice:has(input:checked) {
   border-color: var(--teal);
   box-shadow: inset 0 0 0 2px rgba(18, 106, 112, 0.16);
 }
@@ -159,7 +163,8 @@ input[type="radio"] {
   margin-top: 3px;
 }
 
-.theme-choice input {
+.theme-choice input,
+.cover-choice input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
@@ -209,6 +214,11 @@ small {
   padding: 9px 11px;
   color: var(--ink);
   background: #fffdf8;
+}
+
+.field input[type="color"] {
+  min-height: 46px;
+  padding: 5px;
 }
 
 .field select {
@@ -357,6 +367,105 @@ small {
   --preview-accent: #8c4a2f;
 }
 
+.preview-terminal {
+  --preview-ink: #0d1c14;
+  --preview-muted: #4e6f5e;
+  --preview-page: #fbfff8;
+  --preview-line: #a9c6b0;
+  --preview-soft: #dcebdd;
+  --preview-accent: #1f8f4d;
+}
+
+.preview-cyberpunk {
+  --preview-ink: #161524;
+  --preview-muted: #6f6587;
+  --preview-page: #fffaff;
+  --preview-line: #c9b9e6;
+  --preview-soft: #efe0ff;
+  --preview-accent: #d12a8c;
+}
+
+.preview-midnight {
+  --preview-ink: #dce6e8;
+  --preview-muted: #9aadb3;
+  --preview-page: #151d20;
+  --preview-line: #38474d;
+  --preview-soft: #223137;
+  --preview-accent: #77d9d4;
+}
+
+.cover-box {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.compact-head {
+  padding-bottom: 12px;
+}
+
+.cover-controls {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.cover-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cover-choice {
+  position: relative;
+  display: grid;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px;
+  background: rgba(244, 239, 230, 0.72);
+  cursor: pointer;
+}
+
+.cover-choice strong {
+  overflow: hidden;
+  color: var(--muted);
+  font: 700 11px "Segoe UI", sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cover-preview {
+  display: block;
+  position: relative;
+  aspect-ratio: 0.68;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--cover-choice-color);
+}
+
+.cover-frame .cover-preview {
+  border: 8px solid var(--cover-choice-color);
+  background: #fffaf0;
+}
+
+.cover-diagonal .cover-preview {
+  background:
+    linear-gradient(132deg, var(--cover-choice-color) 0 52%, #fffaf0 52% 100%);
+}
+
+.cover-terminal .cover-preview {
+  background:
+    repeating-linear-gradient(0deg, rgba(137, 255, 155, 0.22) 0 1px, transparent 1px 12px),
+    #0f1b14;
+}
+
+.cover-cyberpunk .cover-preview {
+  background:
+    linear-gradient(135deg, #d12a8c, #111827 48%, #00a7b5),
+    var(--cover-choice-color);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -457,5 +566,9 @@ code {
 
   .theme-list {
     grid-template-columns: 1fr;
+  }
+
+  .cover-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

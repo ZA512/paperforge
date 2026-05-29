@@ -34,6 +34,14 @@ ORIENTATION_LABELS = {
     "portrait": "portrait",
 }
 
+COVER_STYLES = {
+    "solid": "Aplat",
+    "frame": "Cadre",
+    "diagonal": "Diagonal",
+    "terminal": "Terminal",
+    "cyberpunk": "Cyberpunk",
+}
+
 
 PROJECT_MANAGEMENT_99 = ProductSpec(
     slug="project_management_99",
@@ -85,6 +93,19 @@ PROJECT_MANAGEMENT_99 = ProductSpec(
             default=2,
             min_value=1,
             max_value=4,
+        ),
+        ProductOption(
+            key="cover_style",
+            label="Couverture",
+            option_type="select",
+            default="solid",
+            choices=tuple(COVER_STYLES.keys()),
+        ),
+        ProductOption(
+            key="cover_color",
+            label="Couleur couverture",
+            option_type="text",
+            default="#176f75",
         ),
     ),
 )
@@ -210,6 +231,72 @@ THEMES = {
             heading_font='"Georgia", "Cambria", serif',
         ),
     ),
+    "terminal_green": Theme(
+        slug="terminal_green",
+        label="Terminal vert",
+        css_file="themes/pro_landscape.css",
+        page_size="tablet_landscape_16_10",
+        preview_class="preview-terminal",
+        tokens=theme_tokens(
+            ink="#0d1c14",
+            muted="#4e6f5e",
+            paper="#edf3ea",
+            page="#fbfff8",
+            line="#a9c6b0",
+            line_soft="#d9eadb",
+            accent="#1f8f4d",
+            accent_2="#89ff9b",
+            header_bg="#dcebdd",
+            header_text="#102417",
+            footer="#5f7f67",
+            body_font='"Lucida Console", Consolas, "Courier New", monospace',
+            heading_font='Consolas, "Lucida Console", monospace',
+        ),
+    ),
+    "cyberpunk_neon": Theme(
+        slug="cyberpunk_neon",
+        label="Cyberpunk neon",
+        css_file="themes/pro_landscape.css",
+        page_size="tablet_landscape_16_10",
+        preview_class="preview-cyberpunk",
+        tokens=theme_tokens(
+            ink="#161524",
+            muted="#6f6587",
+            paper="#f4f1fb",
+            page="#fffaff",
+            line="#c9b9e6",
+            line_soft="#eadff8",
+            accent="#d12a8c",
+            accent_2="#00a7b5",
+            header_bg="#efe0ff",
+            header_text="#20152d",
+            footer="#7f6b91",
+            body_font='"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+            heading_font='"Trebuchet MS", "Segoe UI", sans-serif',
+        ),
+    ),
+    "midnight_ops": Theme(
+        slug="midnight_ops",
+        label="Midnight ops",
+        css_file="themes/pro_landscape.css",
+        page_size="tablet_landscape_16_10",
+        preview_class="preview-midnight",
+        tokens=theme_tokens(
+            ink="#dce6e8",
+            muted="#9aadb3",
+            paper="#101719",
+            page="#151d20",
+            line="#38474d",
+            line_soft="#243238",
+            accent="#77d9d4",
+            accent_2="#f0b35e",
+            header_bg="#223137",
+            header_text="#edf7f6",
+            footer="#8fa3a8",
+            body_font='"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+            heading_font='"Segoe UI Semibold", "Segoe UI", sans-serif',
+        ),
+    ),
 }
 
 
@@ -236,6 +323,7 @@ def build_context(request: RenderRequest) -> dict:
 
     if product.slug == PROJECT_MANAGEMENT_99.slug:
         options = normalize_legacy_options(options)
+        options["cover_color"] = normalize_hex_color(str(options.get("cover_color", "#176f75")))
         project_count = int(options["project_count"])
         page_format = resolve_page_format(
             str(options["page_format"]),
@@ -254,6 +342,7 @@ def build_context(request: RenderRequest) -> dict:
             "page_format": page_format,
             "layout": layout,
             "theme_tokens": theme.tokens,
+            "cover_text_color": contrast_text_color(str(options["cover_color"])),
             "row_counts": layout["row_counts"],
             "nav": default_nav(),
             "symbols": SYMBOLS,
@@ -313,7 +402,27 @@ def normalize_legacy_options(options: dict) -> dict:
         normalized["page_format"] = "a5"
         normalized["orientation"] = "portrait"
     normalized.setdefault("orientation", "landscape")
+    normalized.setdefault("cover_style", "solid")
+    normalized.setdefault("cover_color", "#176f75")
     return normalized
+
+
+def normalize_hex_color(value: str) -> str:
+    cleaned = value.strip()
+    if len(cleaned) == 7 and cleaned.startswith("#"):
+        digits = cleaned[1:]
+        if all(char in "0123456789abcdefABCDEF" for char in digits):
+            return f"#{digits.lower()}"
+    return "#176f75"
+
+
+def contrast_text_color(hex_color: str) -> str:
+    digits = hex_color.lstrip("#")
+    red = int(digits[0:2], 16)
+    green = int(digits[2:4], 16)
+    blue = int(digits[4:6], 16)
+    luminance = (red * 0.299 + green * 0.587 + blue * 0.114) / 255
+    return "#162024" if luminance > 0.62 else "#fffaf0"
 
 
 def resolve_page_format(slug: str, orientation: str) -> dict:

@@ -57,6 +57,7 @@
 
           {% for product in products %}
             {% for option in product.options %}
+            {% if option.key not in ('cover_style', 'cover_color') %}
             <label class="field">
               <span>{{ option.label }}</span>
               {% if option.option_type == 'select' %}
@@ -77,6 +78,7 @@
               >
               {% endif %}
             </label>
+            {% endif %}
             {% endfor %}
           {% endfor %}
         </div>
@@ -108,6 +110,29 @@
           {% endfor %}
         </div>
 
+        <div class="cover-box">
+          <div class="pane-head compact-head">
+            <h2>Couverture</h2>
+            <span class="count">{{ cover_styles|length }}</span>
+          </div>
+          <div class="cover-controls">
+            <label class="field">
+              <span>Couleur</span>
+              <input class="color-input" name="cover_color" type="color" value="{{ values.get('cover_color', '#176f75') }}">
+            </label>
+            <div class="cover-list">
+              {% for cover_slug, cover_label in cover_styles.items() %}
+              {% set selected = values.get('cover_style', 'solid') == cover_slug %}
+              <label class="cover-choice cover-{{ cover_slug }}{% if selected %} is-selected{% endif %}">
+                <input type="radio" name="cover_style" value="{{ cover_slug }}" {% if selected %}checked{% endif %}>
+                <span class="cover-preview" aria-hidden="true"></span>
+                <strong>{{ cover_label }}</strong>
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
         <div class="export-box">
           <h2>Export</h2>
           <div class="actions">
@@ -128,5 +153,21 @@
       </section>
     </form>
   </main>
+  <script>
+    const coverColor = document.querySelector('input[name="cover_color"]');
+    const syncCoverColor = () => {
+      if (coverColor) document.documentElement.style.setProperty('--cover-choice-color', coverColor.value);
+    };
+    syncCoverColor();
+    coverColor?.addEventListener('input', syncCoverColor);
+
+    document.querySelectorAll('.theme-choice input, .cover-choice input').forEach((input) => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll(`input[name="${input.name}"]`).forEach((peer) => {
+          peer.closest('label').classList.toggle('is-selected', peer.checked);
+        });
+      });
+    });
+  </script>
 </body>
 </html>

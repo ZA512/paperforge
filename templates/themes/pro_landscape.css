@@ -41,6 +41,117 @@ a {
   background: {{ theme_tokens.accent }};
 }
 
+.cover-page {
+  color: {{ cover_text_color }};
+  background: {{ options.cover_color }};
+}
+
+.cover-page::before {
+  display: none;
+}
+
+.cover-page::after {
+  content: "";
+  position: absolute;
+  inset: {{ layout.pad_top }}px {{ layout.pad_x }}px;
+  border: 2px solid currentColor;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.cover-mark,
+.cover-enter {
+  position: absolute;
+  z-index: 2;
+  font-size: {{ layout.font_small }}px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cover-mark {
+  top: {{ layout.pad_top + 22 }}px;
+  left: {{ layout.pad_x + 22 }}px;
+}
+
+.cover-enter {
+  right: {{ layout.pad_x + 22 }}px;
+  bottom: {{ layout.pad_bottom + 22 }}px;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+}
+
+.cover-title-block {
+  position: absolute;
+  z-index: 2;
+  right: {{ layout.pad_x + 60 }}px;
+  bottom: {{ (page_format.height_px * 0.18)|round|int }}px;
+  left: {{ layout.pad_x + 60 }}px;
+}
+
+.cover-title-block h1 {
+  width: 74%;
+  max-width: {{ (page_format.width_px * 0.72)|round|int }}px;
+  font-size: {{ (layout.h1 * 1.28)|round|int }}px;
+  line-height: 0.98;
+}
+
+.cover-title-block p {
+  width: 54%;
+  margin-top: {{ layout.gap }}px;
+  font-size: {{ layout.lead }}px;
+  line-height: 1.35;
+}
+
+.cover-frame {
+  background: {{ theme_tokens.page }};
+}
+
+.cover-frame .cover-title-block,
+.cover-frame .cover-mark,
+.cover-frame .cover-enter {
+  color: {{ theme_tokens.ink }};
+}
+
+.cover-frame::after {
+  inset: {{ layout.pad_top + 24 }}px {{ layout.pad_x + 24 }}px;
+  border: {{ [10, (page_format.width_px * 0.012)|round|int]|max }}px solid {{ options.cover_color }};
+  opacity: 1;
+}
+
+.cover-diagonal {
+  background:
+    linear-gradient(132deg, {{ options.cover_color }} 0 54%, {{ theme_tokens.page }} 54% 100%);
+}
+
+.cover-diagonal .cover-title-block,
+.cover-diagonal .cover-enter {
+  color: {{ theme_tokens.ink }};
+}
+
+.cover-terminal {
+  color: #a7ffb0;
+  background:
+    repeating-linear-gradient(0deg, rgba(137, 255, 155, 0.14) 0 1px, transparent 1px {{ [14, (layout.gap * 0.8)|round|int]|max }}px),
+    linear-gradient(135deg, #07110c, #102017);
+}
+
+.cover-terminal .cover-title-block h1::before {
+  content: "> ";
+}
+
+.cover-cyberpunk {
+  color: #fff7ff;
+  background:
+    linear-gradient(115deg, {{ options.cover_color }} 0 34%, transparent 34% 100%),
+    linear-gradient(135deg, #10101f, #d12a8c 48%, #00a7b5);
+}
+
+.cover-cyberpunk::after {
+  border-color: rgba(255, 255, 255, 0.42);
+  opacity: 1;
+  transform: skew(-6deg);
+}
+
 .topline {
   height: {{ layout.topbar_h }}px;
   margin-bottom: {{ layout.gap }}px;

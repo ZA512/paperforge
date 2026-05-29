@@ -6,6 +6,15 @@
   <style>{{ inline_css|safe }}</style>
 </head>
 <body class="format-{{ options.page_format }} orientation-{{ options.orientation }}">
+  <section class="page cover-page cover-{{ options.cover_style }}" id="cover">
+    <a class="cover-enter" href="#home">Entrer</a>
+    <div class="cover-mark">{{ product.label }}</div>
+    <div class="cover-title-block">
+      <h1>{{ title }}</h1>
+      <p>{{ metadata.subtitle }}</p>
+    </div>
+  </section>
+
   <section class="page home-page" id="home">
     <div class="home-top">
       <div>

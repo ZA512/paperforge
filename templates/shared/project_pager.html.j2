@@ -1,0 +1,13 @@
+<div class="page-actions project-pager">
+  {% for marker_page in project_page_numbers %}
+    {% if marker_page == current_project_page %}
+      <span>{{ marker_page }}/{{ options.pages_per_project }}</span>
+    {% elif marker_page == 1 %}
+      <a href="#project-{{ project.code }}-summary">{{ marker_page }}/{{ options.pages_per_project }}</a>
+    {% elif marker_page == 2 %}
+      <a href="#project-{{ project.code }}-actions">{{ marker_page }}/{{ options.pages_per_project }}</a>
+    {% else %}
+      <a href="#project-{{ project.code }}-extra-{{ marker_page }}">{{ marker_page }}/{{ options.pages_per_project }}</a>
+    {% endif %}
+  {% endfor %}
+</div>

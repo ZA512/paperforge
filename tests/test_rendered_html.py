@@ -36,6 +36,9 @@ def test_project_management_html_has_expected_pages_and_anchors():
     assert "project-01-summary" in parser.ids
     assert "project-99-actions" in parser.ids
     assert "Projet 01 <span" in html
+    assert 'href="#project-01-actions">2/2</a>' in html
+    assert "<span>1/2</span>" in html
+    assert 'href="#project-01-actions">Actions</a>' not in html
     assert ">Actions</th>" in html
     assert "Nom du projet" in html
     assert "Date relance" in html
@@ -93,6 +96,9 @@ def test_pages_per_project_controls_project_page_count():
     assert "project-01-summary" in parser.ids
     assert "project-01-actions" in parser.ids
     assert "project-01-extra-3" in parser.ids
+    assert '<span>1/3</span>' in html
+    assert 'href="#project-01-actions">2/3</a>' in html
+    assert 'href="#project-01-extra-3">3/3</a>' in html
 
 
 def test_tcl_tablet_format_uses_exact_pixels():

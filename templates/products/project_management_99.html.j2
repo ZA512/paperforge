@@ -117,11 +117,8 @@
     <main class="page-body">
       <div class="page-title-row">
         <h2>Projet {{ project.code }} <span class="project-title-name">Nom <i></i></span></h2>
-        <div class="page-actions">
-          {% if not loop.first %}<a href="#project-{{ "%02d"|format(project.number - 1) }}-summary">&lt;</a>{% endif %}
-          {% if options.pages_per_project >= 2 %}<a href="#project-{{ project.code }}-actions">Actions</a>{% endif %}
-          {% if not loop.last %}<a href="#project-{{ "%02d"|format(project.number + 1) }}-summary">&gt;</a>{% endif %}
-        </div>
+        {% set current_project_page = 1 %}
+        {% include "shared/project_pager.html.j2" %}
       </div>
       <div class="summary-grid">
         <div><h3>Objectif</h3><div class="note-lines"></div></div>
@@ -134,7 +131,7 @@
         </table>
       </div>
     </main>
-    <div class="footer"><span>Projet {{ project.code }} · synthese</span><span>{{ title }}</span></div>
+    <div class="footer"><span>Projet {{ project.code }} · synthese</span><span class="project-jump">{% if not loop.first %}<a href="#project-{{ "%02d"|format(project.number - 1) }}-summary">&lt; projet</a>{% endif %}{% if not loop.last %}<a href="#project-{{ "%02d"|format(project.number + 1) }}-summary">projet &gt;</a>{% endif %}</span></div>
   </section>
 
   {% if options.pages_per_project >= 2 %}
@@ -143,10 +140,8 @@
     <main class="page-body">
       <div class="page-title-row">
         <h2>Projet {{ project.code }} <span class="project-title-name">Nom <i></i></span></h2>
-        <div class="page-actions">
-          <a href="#project-{{ project.code }}-summary">Synthese</a>
-          {% if options.pages_per_project >= 3 %}<a href="#project-{{ project.code }}-extra-3">Notes</a>{% endif %}
-        </div>
+        {% set current_project_page = 2 %}
+        {% include "shared/project_pager.html.j2" %}
       </div>
       <h3>Actions</h3>
       <div class="table-fill actions-fill">
@@ -165,12 +160,9 @@
     {% include "shared/topline.html.j2" %}
     <main class="page-body">
       <div class="page-title-row">
-        <h2>Projet {{ project.code }} · notes {{ page_no }}/{{ options.pages_per_project }}</h2>
-        <div class="page-actions">
-          <a href="#project-{{ project.code }}-summary">Synthese</a>
-          {% if page_no > 3 %}<a href="#project-{{ project.code }}-extra-{{ page_no - 1 }}">&lt;</a>{% else %}<a href="#project-{{ project.code }}-actions">&lt;</a>{% endif %}
-          {% if page_no < options.pages_per_project %}<a href="#project-{{ project.code }}-extra-{{ page_no + 1 }}">&gt;</a>{% endif %}
-        </div>
+        <h2>Projet {{ project.code }} <span class="project-title-name">Nom <i></i></span></h2>
+        {% set current_project_page = page_no %}
+        {% include "shared/project_pager.html.j2" %}
       </div>
       <div class="note-fill"></div>
     </main>

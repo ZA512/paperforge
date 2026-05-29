@@ -72,6 +72,18 @@ a {
   padding-bottom: 2px;
 }
 
+.project-pager span {
+  margin-left: 18px;
+  color: #162024;
+  font-weight: 700;
+}
+
+.project-jump a {
+  margin-left: 18px;
+  border-bottom: 1px solid #cfc7b8;
+  padding-bottom: 1px;
+}
+
 .page-body {
   position: relative;
   height: {{ page_format.height_px - layout.pad_top - layout.pad_bottom - layout.topbar_h - layout.footer_h - layout.gap }}px;

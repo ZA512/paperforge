@@ -146,6 +146,7 @@ def build_context(request: RenderRequest) -> dict:
             "journal_pages": range(1, int(options["journal_pages"]) + 1),
             "radar_pages": range(1, int(options["radar_pages"]) + 1),
             "extra_project_pages": range(3, int(options["pages_per_project"]) + 1),
+            "project_page_numbers": range(1, int(options["pages_per_project"]) + 1),
             "index_groups": chunk(projects, 25),
             "projects": projects,
         }

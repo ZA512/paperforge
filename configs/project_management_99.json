@@ -4,6 +4,7 @@
   "title": "Carnet de pilotage projets",
   "options": {
     "page_format": "tablet_16_10",
+    "orientation": "landscape",
     "project_count": 99,
     "pages_per_project": 2,
     "journal_pages": 2,

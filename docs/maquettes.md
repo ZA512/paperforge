@@ -35,7 +35,8 @@ Etat attendu:
 | - General            | [Carnet de pilotage projets        ]  |
 | - Pages              |                                       |
 | - Nomenclature       | Format           [Tablette 16:10 v]   |
-| - Export             | Nombre de projets [99]                |
+| - Export             | Orientation      [Paysage v]          |
+|                      | Nombre de projets [99]                |
 |                      | Pages / projet    [-] [2] [+]         |
 |                      | Pages journal     [-] [2] [+]         |
 |                      | Pages radar       [-] [2] [+]         |

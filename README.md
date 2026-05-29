@@ -42,7 +42,7 @@ http://127.0.0.1:8765
 L'interface permet de:
 
 - choisir le produit;
-- modifier titre, format, sous-titre et quantites de pages;
+- modifier titre, format, orientation, sous-titre et quantites de pages;
 - choisir le nombre de pages par projet;
 - choisir le theme;
 - generer un HTML;
@@ -103,3 +103,6 @@ PDF.
 Alternative pratique: placer l'executable officiel `weasyprint.exe` a la racine
 du projet. Paperforge l'utilise automatiquement en fallback si la librairie
 Python WeasyPrint ne peut pas charger les DLL natives.
+
+Le format `TCL NXTPAPER 11+` utilise une page de 2200 x 1440 px en paysage
+afin de conserver le ratio de la tablette.

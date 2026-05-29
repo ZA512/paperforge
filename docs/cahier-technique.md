@@ -49,6 +49,7 @@ tests/
   "title": "Carnet de pilotage projets",
   "options": {
     "page_format": "tablet_16_10",
+    "orientation": "landscape",
     "project_count": 99,
     "pages_per_project": 2,
     "journal_pages": 2,
@@ -90,7 +91,8 @@ Regles implementees:
 - Pages projet 3 et plus: notes supplementaires.
 - Journal du jour configurable, defaut 2 pages.
 - Radar non specialise configurable, defaut 2 pages.
-- Format configurable: tablette 16:10, A4 portrait, A5 portrait.
+- Format configurable: tablette 16:10, TCL NXTPAPER 11+, A4, A5.
+- Orientation configurable: paysage ou portrait.
 - Page priorites.
 - Index par blocs de 25 lignes.
 - Index reduit a `N / Projet / Etat`.

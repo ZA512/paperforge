@@ -11,7 +11,15 @@ from urllib.parse import parse_qs, urlparse
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from .models import RenderRequest
-from .products import FORMAT_PRESETS, PRODUCTS, THEMES, get_product, get_theme, resolve_options
+from .products import (
+    FORMAT_PRESETS,
+    ORIENTATION_LABELS,
+    PRODUCTS,
+    THEMES,
+    get_product,
+    get_theme,
+    resolve_options,
+)
 from .render import ROOT, write_output
 
 
@@ -72,8 +80,10 @@ class PaperforgeHandler(BaseHTTPRequestHandler):
             default_theme=next(iter(THEMES.values())).slug,
             choice_labels={
                 "page_format": {
-                    slug: preset["label"] for slug, preset in FORMAT_PRESETS.items()
-                }
+                    slug: f"{preset['label']} ({preset['width_px']} x {preset['height_px']} px)"
+                    for slug, preset in FORMAT_PRESETS.items()
+                },
+                "orientation": ORIENTATION_LABELS,
             },
             values=values or {},
             result=result,

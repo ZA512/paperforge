@@ -8,4 +8,5 @@ weasyprint.exe
 dist/*.pdf
 dist/*.html
 dist/*.log
+dist/*.json
 configs/generated_*.json

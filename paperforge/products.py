@@ -9,22 +9,29 @@ from .models import NavLink, ProductOption, ProductSpec, ProjectSlot, RenderRequ
 FORMAT_PRESETS = {
     "tablet_16_10": {
         "label": "Tablette 16:10",
-        "metadata_label": "tablette 16:10",
-        "width_px": 960,
-        "height_px": 600,
+        "width_px": 1280,
+        "height_px": 800,
     },
-    "a4_portrait": {
-        "label": "A4 portrait",
-        "metadata_label": "A4 portrait",
-        "width_px": 595,
-        "height_px": 842,
+    "tablet_tcl_nxtpaper_11_plus": {
+        "label": "TCL NXTPAPER 11+",
+        "width_px": 2200,
+        "height_px": 1440,
     },
-    "a5_portrait": {
-        "label": "A5 portrait",
-        "metadata_label": "A5 portrait",
-        "width_px": 420,
+    "a4": {
+        "label": "A4",
+        "width_px": 842,
         "height_px": 595,
     },
+    "a5": {
+        "label": "A5",
+        "width_px": 595,
+        "height_px": 420,
+    },
+}
+
+ORIENTATION_LABELS = {
+    "landscape": "paysage",
+    "portrait": "portrait",
 }
 
 
@@ -39,6 +46,13 @@ PROJECT_MANAGEMENT_99 = ProductSpec(
             option_type="select",
             default="tablet_16_10",
             choices=tuple(FORMAT_PRESETS.keys()),
+        ),
+        ProductOption(
+            key="orientation",
+            label="Orientation",
+            option_type="select",
+            default="landscape",
+            choices=tuple(ORIENTATION_LABELS.keys()),
         ),
         ProductOption(
             key="project_count",
@@ -108,10 +122,15 @@ def build_context(request: RenderRequest) -> dict:
     options = resolve_options(product.options, request.options)
 
     if product.slug == PROJECT_MANAGEMENT_99.slug:
+        options = normalize_legacy_options(options)
         project_count = int(options["project_count"])
-        page_format = FORMAT_PRESETS[str(options["page_format"])]
+        page_format = resolve_page_format(
+            str(options["page_format"]),
+            str(options["orientation"]),
+        )
         metadata = dict(request.metadata)
         metadata["format"] = page_format["metadata_label"]
+        row_counts = compute_row_counts(page_format["height_px"])
         projects = [ProjectSlot(number=index) for index in range(1, project_count + 1)]
         return {
             "product": asdict(product),
@@ -120,6 +139,7 @@ def build_context(request: RenderRequest) -> dict:
             "options": options,
             "metadata": metadata,
             "page_format": page_format,
+            "row_counts": row_counts,
             "nav": default_nav(),
             "symbols": SYMBOLS,
             "journal_pages": range(1, int(options["journal_pages"]) + 1),
@@ -165,6 +185,48 @@ def resolve_options(schema: Iterable[ProductOption], values: dict) -> dict:
             raise ValueError(f"{option.key} must be one of {option.choices}")
         resolved[option.key] = value
     return resolved
+
+
+def normalize_legacy_options(options: dict) -> dict:
+    normalized = dict(options)
+    legacy_format = normalized.get("page_format")
+    if legacy_format == "a4_portrait":
+        normalized["page_format"] = "a4"
+        normalized["orientation"] = "portrait"
+    elif legacy_format == "a5_portrait":
+        normalized["page_format"] = "a5"
+        normalized["orientation"] = "portrait"
+    normalized.setdefault("orientation", "landscape")
+    return normalized
+
+
+def resolve_page_format(slug: str, orientation: str) -> dict:
+    preset = FORMAT_PRESETS[slug]
+    width = int(preset["width_px"])
+    height = int(preset["height_px"])
+    if orientation == "portrait" and width > height:
+        width, height = height, width
+    elif orientation == "landscape" and height > width:
+        width, height = height, width
+    orientation_label = ORIENTATION_LABELS[orientation]
+    return {
+        "slug": slug,
+        "orientation": orientation,
+        "label": preset["label"],
+        "metadata_label": f"{preset['label']} {orientation_label} - {width} x {height} px",
+        "width_px": width,
+        "height_px": height,
+    }
+
+
+def compute_row_counts(page_height: int) -> dict[str, int]:
+    return {
+        "journal": max(12, min(28, (page_height - 260) // 38)),
+        "radar": max(12, min(30, (page_height - 220) // 36)),
+        "priorities": max(12, min(30, (page_height - 220) // 36)),
+        "actions": max(14, min(32, (page_height - 220) // 36)),
+        "open_points": max(5, min(14, (page_height - 520) // 42)),
+    }
 
 
 def default_nav() -> tuple[NavLink, ...]:

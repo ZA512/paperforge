@@ -12,7 +12,7 @@ deleguee a WeasyPrint afin de conserver les liens internes du carnet.
 `project_management_99` genere un carnet de pilotage projets:
 
 - 99 projets maximum;
-- 2 pages par projet: synthese et actions / journal;
+- nombre de pages par projet configurable, avec 2 pages par defaut: synthese et actions / journal;
 - journal du jour;
 - radar non specialise;
 - priorites;
@@ -43,6 +43,7 @@ L'interface permet de:
 
 - choisir le produit;
 - modifier titre, format, sous-titre et quantites de pages;
+- choisir le nombre de pages par projet;
 - choisir le theme;
 - generer un HTML;
 - tenter une generation PDF;

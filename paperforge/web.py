@@ -11,7 +11,7 @@ from urllib.parse import parse_qs, urlparse
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from .models import RenderRequest
-from .products import PRODUCTS, THEMES, get_product, get_theme, resolve_options
+from .products import FORMAT_PRESETS, PRODUCTS, THEMES, get_product, get_theme, resolve_options
 from .render import ROOT, write_output
 
 
@@ -70,6 +70,11 @@ class PaperforgeHandler(BaseHTTPRequestHandler):
             themes=[asdict(theme) for theme in THEMES.values()],
             default_product=next(iter(PRODUCTS.values())).slug,
             default_theme=next(iter(THEMES.values())).slug,
+            choice_labels={
+                "page_format": {
+                    slug: preset["label"] for slug, preset in FORMAT_PRESETS.items()
+                }
+            },
             values=values or {},
             result=result,
         )
@@ -176,7 +181,6 @@ def request_from_form(form: dict[str, str]) -> RenderRequest:
         title=title,
         options=options,
         metadata={
-            "format": form.get("format") or "tablette 16:10",
             "subtitle": form.get("subtitle")
             or "Capture rapide, radar de relance, index hyperlie et 99 projets en deux pages.",
         },

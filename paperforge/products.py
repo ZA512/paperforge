@@ -6,11 +6,40 @@ from dataclasses import asdict
 from .models import NavLink, ProductOption, ProductSpec, ProjectSlot, RenderRequest, Theme
 
 
+FORMAT_PRESETS = {
+    "tablet_16_10": {
+        "label": "Tablette 16:10",
+        "metadata_label": "tablette 16:10",
+        "width_px": 960,
+        "height_px": 600,
+    },
+    "a4_portrait": {
+        "label": "A4 portrait",
+        "metadata_label": "A4 portrait",
+        "width_px": 595,
+        "height_px": 842,
+    },
+    "a5_portrait": {
+        "label": "A5 portrait",
+        "metadata_label": "A5 portrait",
+        "width_px": 420,
+        "height_px": 595,
+    },
+}
+
+
 PROJECT_MANAGEMENT_99 = ProductSpec(
     slug="project_management_99",
     label="Gestion de projets - 99 projets",
     template_file="products/project_management_99.html.j2",
     options=(
+        ProductOption(
+            key="page_format",
+            label="Format",
+            option_type="select",
+            default="tablet_16_10",
+            choices=tuple(FORMAT_PRESETS.keys()),
+        ),
         ProductOption(
             key="project_count",
             label="Nombre de projets",
@@ -18,6 +47,14 @@ PROJECT_MANAGEMENT_99 = ProductSpec(
             default=99,
             min_value=1,
             max_value=99,
+        ),
+        ProductOption(
+            key="pages_per_project",
+            label="Pages par projet",
+            option_type="number",
+            default=2,
+            min_value=1,
+            max_value=4,
         ),
         ProductOption(
             key="journal_pages",
@@ -72,17 +109,22 @@ def build_context(request: RenderRequest) -> dict:
 
     if product.slug == PROJECT_MANAGEMENT_99.slug:
         project_count = int(options["project_count"])
+        page_format = FORMAT_PRESETS[str(options["page_format"])]
+        metadata = dict(request.metadata)
+        metadata["format"] = page_format["metadata_label"]
         projects = [ProjectSlot(number=index) for index in range(1, project_count + 1)]
         return {
             "product": asdict(product),
             "theme": asdict(theme),
             "title": request.title,
             "options": options,
-            "metadata": request.metadata,
+            "metadata": metadata,
+            "page_format": page_format,
             "nav": default_nav(),
             "symbols": SYMBOLS,
             "journal_pages": range(1, int(options["journal_pages"]) + 1),
             "radar_pages": range(1, int(options["radar_pages"]) + 1),
+            "extra_project_pages": range(3, int(options["pages_per_project"]) + 1),
             "index_groups": chunk(projects, 25),
             "projects": projects,
         }
@@ -116,6 +158,9 @@ def resolve_options(schema: Iterable[ProductOption], values: dict) -> dict:
                 raise ValueError(f"{option.key} must be <= {option.max_value}")
         elif option.option_type == "boolean":
             value = bool(value)
+        elif option.option_type == "select":
+            if value not in option.choices:
+                raise ValueError(f"{option.key} must be one of {option.choices}")
         elif option.choices and value not in option.choices:
             raise ValueError(f"{option.key} must be one of {option.choices}")
         resolved[option.key] = value

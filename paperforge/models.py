@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 
-PageSize = Literal["tablet_landscape_16_10", "a4_portrait"]
+PageSize = Literal["tablet_landscape_16_10", "a4_portrait", "a5_portrait"]
 
 
 @dataclass(frozen=True)
@@ -59,4 +59,3 @@ class RenderRequest:
 class NavLink:
     label: str
     target: str
-

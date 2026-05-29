@@ -48,7 +48,9 @@ tests/
   "theme": "pro_landscape",
   "title": "Carnet de pilotage projets",
   "options": {
+    "page_format": "tablet_16_10",
     "project_count": 99,
+    "pages_per_project": 2,
     "journal_pages": 2,
     "radar_pages": 2
   },
@@ -82,9 +84,13 @@ page_size  Format logique, par exemple tablet_landscape_16_10.
 Regles implementees:
 
 - 99 projets maximum.
-- 2 pages par projet: synthese, puis actions / journal.
+- Nombre de pages par projet configurable, defaut 2.
+- Page 1 projet: synthese.
+- Page 2 projet: actions / journal.
+- Pages projet 3 et plus: notes supplementaires.
 - Journal du jour configurable, defaut 2 pages.
 - Radar non specialise configurable, defaut 2 pages.
+- Format configurable: tablette 16:10, A4 portrait, A5 portrait.
 - Page priorites.
 - Index par blocs de 25 lignes.
 - Index reduit a `N / Projet / Etat`.
@@ -100,7 +106,7 @@ Pagination par defaut:
 2 radar
 1 priorites
 4 index
-198 pages projet
+198 pages projet avec 2 pages par projet
 = 209 pages
 ```
 

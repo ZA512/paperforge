@@ -5,7 +5,7 @@
   <title>{{ title }}</title>
   <style>{{ inline_css|safe }}</style>
 </head>
-<body>
+<body class="format-{{ options.page_format }}">
   <section class="page" id="home">
     <div class="topline">
       <div class="kicker">{{ metadata.format }}</div>
@@ -110,7 +110,7 @@
       <div class="page-actions">
         {% if not loop.first %}<a href="#project-{{ "%02d"|format(project.number - 1) }}-summary">&lt; precedent</a>{% endif %}
         {% if not loop.last %}<a href="#project-{{ "%02d"|format(project.number + 1) }}-summary">suivant &gt;</a>{% endif %}
-        <a href="#project-{{ project.code }}-actions">actions</a>
+        {% if options.pages_per_project >= 2 %}<a href="#project-{{ project.code }}-actions">actions</a>{% endif %}
       </div>
     </div>
     <div class="field-line"><span>Projet :</span><span class="line"></span><span>Domaine :</span><span class="line"></span></div>
@@ -127,11 +127,15 @@
     <div class="footer"><span>Projet {{ project.code }} - Synthese</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
   </section>
 
+  {% if options.pages_per_project >= 2 %}
   <section class="page" id="project-{{ project.code }}-actions">
     {% include "shared/topline.html.j2" %}
     <div class="topline" style="margin-top: -4px;">
       <h2>Projet {{ project.code }} - Actions / journal</h2>
-      <div class="page-actions"><a href="#project-{{ project.code }}-summary">synthese</a></div>
+      <div class="page-actions">
+        <a href="#project-{{ project.code }}-summary">synthese</a>
+        {% if options.pages_per_project >= 3 %}<a href="#project-{{ project.code }}-extra-3">suite</a>{% endif %}
+      </div>
     </div>
     <div class="symbol-row">{% for item in symbols %}<span><span class="symbol">{{ item.symbol }}</span> {{ item.label|lower }}</span>{% endfor %}</div>
     <table class="table">
@@ -140,6 +144,24 @@
     </table>
     <div class="footer"><span>Projet {{ project.code }} - Actions / journal</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
   </section>
+  {% endif %}
+
+  {% for page_no in extra_project_pages %}
+  <section class="page" id="project-{{ project.code }}-extra-{{ page_no }}">
+    {% include "shared/topline.html.j2" %}
+    <div class="topline" style="margin-top: -4px;">
+      <h2>Projet {{ project.code }} - Notes {{ page_no }}/{{ options.pages_per_project }}</h2>
+      <div class="page-actions">
+        <a href="#project-{{ project.code }}-summary">synthese</a>
+        {% if page_no > 3 %}<a href="#project-{{ project.code }}-extra-{{ page_no - 1 }}">&lt; precedent</a>{% else %}<a href="#project-{{ project.code }}-actions">&lt; precedent</a>{% endif %}
+        {% if page_no < options.pages_per_project %}<a href="#project-{{ project.code }}-extra-{{ page_no + 1 }}">suivant &gt;</a>{% endif %}
+      </div>
+    </div>
+    <div class="field-line"><span>Sujet :</span><span class="line"></span><span>Date :</span><span class="line"></span></div>
+    <div class="notes" style="height: 400px;"></div>
+    <div class="footer"><span>Projet {{ project.code }} - Notes {{ page_no }}</span><span>Carnet pro - {{ options.project_count }} projets</span></div>
+  </section>
+  {% endfor %}
   {% endfor %}
 </body>
 </html>

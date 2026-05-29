@@ -29,6 +29,7 @@ def load_request(path: Path) -> RenderRequest:
 def render_html(request: RenderRequest) -> str:
     product = get_product(request.product)
     theme = get_theme(request.theme)
+    context = build_context(request)
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATE_ROOT)),
         autoescape=select_autoescape(("html", "xml", "j2")),
@@ -36,8 +37,13 @@ def render_html(request: RenderRequest) -> str:
         lstrip_blocks=True,
     )
     template = env.get_template(product.template_file)
-    css = (TEMPLATE_ROOT / theme.css_file).read_text(encoding="utf-8")
-    return template.render(**build_context(request), inline_css=css)
+    css = render_theme_css(env, theme.css_file, context)
+    return template.render(**context, inline_css=css)
+
+
+def render_theme_css(env: Environment, css_file: str, context: dict) -> str:
+    css_source = (TEMPLATE_ROOT / css_file).read_text(encoding="utf-8")
+    return env.from_string(css_source).render(**context)
 
 
 def write_output(request: RenderRequest, output: Path, html_only: bool = False) -> None:

@@ -50,10 +50,6 @@
             <span>Titre</span>
             <input name="title" value="{{ values.get('title', 'Carnet de pilotage projets') }}">
           </label>
-          <label class="field">
-            <span>Format</span>
-            <input name="format" value="{{ values.get('format', 'tablette 16:10') }}">
-          </label>
           <label class="field wide">
             <span>Sous-titre</span>
             <input name="subtitle" value="{{ values.get('subtitle', 'Capture rapide, radar de relance, index hyperlie et 99 projets en deux pages.') }}">
@@ -63,6 +59,15 @@
             {% for option in product.options %}
             <label class="field">
               <span>{{ option.label }}</span>
+              {% if option.option_type == 'select' %}
+              <select name="{{ option.key }}">
+                {% for choice in option.choices %}
+                <option value="{{ choice }}" {% if values.get(option.key, option.default) == choice %}selected{% endif %}>
+                  {{ choice_labels.get(option.key, {}).get(choice, choice) }}
+                </option>
+                {% endfor %}
+              </select>
+              {% else %}
               <input
                 name="{{ option.key }}"
                 type="{% if option.option_type == 'number' %}number{% else %}text{% endif %}"
@@ -70,6 +75,7 @@
                 {% if option.min_value is not none %}min="{{ option.min_value }}"{% endif %}
                 {% if option.max_value is not none %}max="{{ option.max_value }}"{% endif %}
               >
+              {% endif %}
             </label>
             {% endfor %}
           {% endfor %}

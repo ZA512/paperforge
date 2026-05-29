@@ -1,5 +1,5 @@
 @page {
-  size: 960px 600px;
+  size: {{ page_format.width_px }}px {{ page_format.height_px }}px;
   margin: 0;
 }
 
@@ -23,8 +23,8 @@ a {
 
 .page {
   break-after: page;
-  height: 600px;
-  width: 960px;
+  height: {{ page_format.height_px }}px;
+  width: {{ page_format.width_px }}px;
   padding: 24px 32px 20px;
   position: relative;
   background: #f7f3eb;
@@ -235,4 +235,46 @@ h3 {
 .index-number {
   font-weight: 800;
   color: #146c72;
+}
+
+.format-a4_portrait .home-map,
+.format-a5_portrait .home-map,
+.format-a4_portrait .grid.two,
+.format-a5_portrait .grid.two {
+  grid-template-columns: 1fr;
+}
+
+.format-a4_portrait .nav,
+.format-a5_portrait .nav,
+.format-a4_portrait .symbol-row,
+.format-a5_portrait .symbol-row {
+  gap: 6px;
+}
+
+.format-a4_portrait .table,
+.format-a5_portrait .table {
+  font-size: 11px;
+}
+
+.format-a5_portrait .page {
+  padding: 22px 20px 18px;
+}
+
+.format-a5_portrait h1 {
+  font-size: 32px;
+}
+
+.format-a5_portrait h2 {
+  font-size: 20px;
+}
+
+.format-a5_portrait .topline {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.format-a5_portrait .field-line {
+  grid-template-columns: 80px 1fr;
 }

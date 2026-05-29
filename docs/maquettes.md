@@ -34,8 +34,10 @@ Etat attendu:
 | Parametres           | Titre du carnet                       |
 | - General            | [Carnet de pilotage projets        ]  |
 | - Pages              |                                       |
-| - Nomenclature       | Nombre de projets [99]                |
-| - Export             | Pages journal     [-] [2] [+]         |
+| - Nomenclature       | Format           [Tablette 16:10 v]   |
+| - Export             | Nombre de projets [99]                |
+|                      | Pages / projet    [-] [2] [+]         |
+|                      | Pages journal     [-] [2] [+]         |
 |                      | Pages radar       [-] [2] [+]         |
 |                      |                                       |
 |                      | Nomenclature                          |

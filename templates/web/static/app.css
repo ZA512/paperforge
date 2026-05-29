@@ -27,7 +27,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -183,7 +184,8 @@ small {
   letter-spacing: 0;
 }
 
-.field input {
+.field input,
+.field select {
   width: 100%;
   min-height: 44px;
   border: 1px solid var(--line);
@@ -193,7 +195,12 @@ small {
   background: #fffdf8;
 }
 
-.field input:focus {
+.field select {
+  cursor: pointer;
+}
+
+.field input:focus,
+.field select:focus {
   outline: 3px solid rgba(18, 106, 112, 0.2);
   border-color: var(--teal);
 }

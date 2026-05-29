@@ -11,9 +11,9 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  color: #162024;
-  background: #f7f4ee;
+  font-family: {{ theme_tokens.body_font|safe }};
+  color: {{ theme_tokens.ink }};
+  background: {{ theme_tokens.paper }};
 }
 
 a {
@@ -28,7 +28,7 @@ a {
   padding: {{ layout.pad_top }}px {{ layout.pad_x }}px {{ layout.pad_bottom }}px;
   position: relative;
   overflow: hidden;
-  background: #fbf8f0;
+  background: {{ theme_tokens.page }};
 }
 
 .page::before {
@@ -38,19 +38,19 @@ a {
   right: 0;
   left: 0;
   height: 6px;
-  background: #176f75;
+  background: {{ theme_tokens.accent }};
 }
 
 .topline {
   height: {{ layout.topbar_h }}px;
   margin-bottom: {{ layout.gap }}px;
-  color: #647174;
+  color: {{ theme_tokens.muted }};
   font-size: {{ layout.font_small }}px;
   line-height: {{ layout.topbar_h }}px;
 }
 
 .kicker {
-  color: #176f75;
+  color: {{ theme_tokens.accent }};
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -68,19 +68,19 @@ a {
 .page-actions a,
 .home-nav a {
   margin-left: 18px;
-  border-bottom: 1px solid #cfc7b8;
+  border-bottom: 1px solid {{ theme_tokens.line }};
   padding-bottom: 2px;
 }
 
 .project-pager span {
   margin-left: 18px;
-  color: #162024;
+  color: {{ theme_tokens.ink }};
   font-weight: 700;
 }
 
 .project-jump a {
   margin-left: 18px;
-  border-bottom: 1px solid #cfc7b8;
+  border-bottom: 1px solid {{ theme_tokens.line }};
   padding-bottom: 1px;
 }
 
@@ -97,6 +97,7 @@ p {
 }
 
 h1 {
+  font-family: {{ theme_tokens.heading_font|safe }};
   width: 78%;
   font-size: {{ layout.h1 }}px;
   line-height: 1.02;
@@ -104,6 +105,7 @@ h1 {
 }
 
 h2 {
+  font-family: {{ theme_tokens.heading_font|safe }};
   font-size: {{ layout.h2 }}px;
   line-height: 1.08;
   letter-spacing: 0;
@@ -118,14 +120,14 @@ h3 {
 .lead {
   width: 70%;
   margin-top: 14px;
-  color: #647174;
+  color: {{ theme_tokens.muted }};
   font-size: {{ layout.lead }}px;
   line-height: 1.35;
 }
 
 .quiet {
   margin: 14px 0 24px;
-  color: #647174;
+  color: {{ theme_tokens.muted }};
   font-size: {{ layout.font_base }}px;
 }
 
@@ -152,7 +154,7 @@ h3 {
   width: 23.5%;
   height: {{ layout.home_card_h }}px;
   margin-right: 2%;
-  border-top: 2px solid #176f75;
+  border-top: 2px solid {{ theme_tokens.accent }};
   padding-top: 14px;
 }
 
@@ -171,7 +173,7 @@ h3 {
 
 .home-grid span {
   margin-top: 7px;
-  color: #647174;
+  color: {{ theme_tokens.muted }};
   font-size: {{ layout.font_small }}px;
 }
 
@@ -188,7 +190,7 @@ h3 {
   display: inline-block;
   min-width: 48%;
   margin-left: 22px;
-  color: #647174;
+  color: {{ theme_tokens.muted }};
   font-size: {{ layout.font_small }}px;
   font-weight: 400;
   vertical-align: middle;
@@ -198,14 +200,14 @@ h3 {
   display: inline-block;
   width: {{ (page_format.width_px * 0.26)|round|int }}px;
   height: 1px;
-  border-bottom: 1px solid #cfc7b8;
+  border-bottom: 1px solid {{ theme_tokens.line }};
   vertical-align: middle;
 }
 
 .page-title-row p,
 .inline-fields {
   float: right;
-  color: #647174;
+  color: {{ theme_tokens.muted }};
   font-size: {{ layout.font_small }}px;
 }
 
@@ -223,7 +225,7 @@ h3 {
   display: inline-block;
   width: 34%;
   height: 1px;
-  border-bottom: 1px solid #cfc7b8;
+  border-bottom: 1px solid {{ theme_tokens.line }};
 }
 
 .table-fill {
@@ -265,7 +267,7 @@ h3 {
 
 .table th,
 .table td {
-  border: 1px solid #cfc7b8;
+  border: 1px solid {{ theme_tokens.line }};
   padding: 6px 8px;
   text-align: left;
   vertical-align: top;
@@ -273,8 +275,8 @@ h3 {
 
 .table th {
   height: {{ layout.header_h }}px;
-  color: #243135;
-  background: #eee7da;
+  color: {{ theme_tokens.header_text }};
+  background: {{ theme_tokens.header_bg }};
   font-weight: 700;
 }
 
@@ -297,13 +299,13 @@ h3 {
 
 .legend-table td:first-child {
   width: 12%;
-  color: #176f75;
+  color: {{ theme_tokens.accent }};
   font-weight: 800;
   text-align: center;
 }
 
 .index-number {
-  color: #176f75;
+  color: {{ theme_tokens.accent }};
   font-weight: 800;
 }
 
@@ -318,8 +320,8 @@ h3 {
 
 .note-lines,
 .note-fill {
-  border: 1px solid #cfc7b8;
-  background-image: linear-gradient(#e2dbce 1px, transparent 1px);
+  border: 1px solid {{ theme_tokens.line }};
+  background-image: linear-gradient({{ theme_tokens.line_soft }} 1px, transparent 1px);
   background-size: 100% {{ layout.note_line }}px;
 }
 
@@ -336,7 +338,7 @@ h3 {
   right: {{ layout.pad_x }}px;
   bottom: {{ layout.pad_bottom // 2 }}px;
   left: {{ layout.pad_x }}px;
-  color: #8a8580;
+  color: {{ theme_tokens.footer }};
   font-size: {{ layout.font_small }}px;
 }
 

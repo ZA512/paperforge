@@ -68,6 +68,20 @@ Generer seulement le HTML:
   --html-only
 ```
 
+## Themes PDF
+
+Le template de placement reste commun a tous les themes. Les variantes changent
+les couleurs, les polices et les entetes de tableaux via des tokens declares
+dans `paperforge/products.py`.
+
+Themes disponibles:
+
+- `pro_landscape` - Pro clair;
+- `ledger_blue` - Bleu registre;
+- `sage_focus` - Sauge focus;
+- `graphite_lime` - Graphite lime;
+- `copper_workshop` - Atelier cuivre.
+
 ## Structure
 
 ```text

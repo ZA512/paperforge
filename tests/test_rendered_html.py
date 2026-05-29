@@ -1,6 +1,7 @@
 from html.parser import HTMLParser
 
 from paperforge.models import RenderRequest
+from paperforge.products import THEMES
 from paperforge.render import render_html
 
 
@@ -120,3 +121,23 @@ def test_tcl_tablet_format_uses_exact_pixels():
 
     assert "size: 2200px 1440px;" in html
     assert "TCL NXTPAPER 11+ paysage - 2200 x 1440 px" in html
+
+
+def test_all_pdf_themes_render_with_their_tokens():
+    for slug, theme in THEMES.items():
+        html = render_html(
+            RenderRequest(
+                product="project_management_99",
+                theme=slug,
+                title="Carnet",
+                options={
+                    "project_count": 1,
+                    "pages_per_project": 1,
+                    "journal_pages": 1,
+                    "radar_pages": 1,
+                },
+            )
+        )
+
+        assert theme.tokens["accent"] in html
+        assert theme.tokens["header_bg"] in html

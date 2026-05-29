@@ -90,12 +90,125 @@ PROJECT_MANAGEMENT_99 = ProductSpec(
 )
 
 
+BASE_THEME_TOKENS = {
+    "ink": "#162024",
+    "muted": "#647174",
+    "paper": "#f7f4ee",
+    "page": "#fbf8f0",
+    "line": "#cfc7b8",
+    "line_soft": "#e2dbce",
+    "accent": "#176f75",
+    "accent_2": "#c84f35",
+    "header_bg": "#eee7da",
+    "header_text": "#243135",
+    "footer": "#8a8580",
+    "body_font": '"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+    "heading_font": '"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+}
+
+
+def theme_tokens(**overrides: str) -> dict[str, str]:
+    tokens = dict(BASE_THEME_TOKENS)
+    tokens.update(overrides)
+    return tokens
+
+
 THEMES = {
     "pro_landscape": Theme(
         slug="pro_landscape",
-        label="Pro paysage 16:10",
+        label="Pro clair",
         css_file="themes/pro_landscape.css",
         page_size="tablet_landscape_16_10",
+        preview_class="preview-pro",
+        tokens=theme_tokens(),
+    ),
+    "ledger_blue": Theme(
+        slug="ledger_blue",
+        label="Bleu registre",
+        css_file="themes/pro_landscape.css",
+        page_size="tablet_landscape_16_10",
+        preview_class="preview-ledger",
+        tokens=theme_tokens(
+            ink="#152532",
+            muted="#5b7180",
+            paper="#edf4f7",
+            page="#f8fcfd",
+            line="#bfd0d8",
+            line_soft="#d7e5ea",
+            accent="#2f6f8f",
+            accent_2="#bf6f4a",
+            header_bg="#dcebf0",
+            header_text="#183447",
+            footer="#6f8792",
+            body_font='"Candara", "Segoe UI", sans-serif',
+            heading_font='"Georgia", "Cambria", serif',
+        ),
+    ),
+    "sage_focus": Theme(
+        slug="sage_focus",
+        label="Sauge focus",
+        css_file="themes/pro_landscape.css",
+        page_size="tablet_landscape_16_10",
+        preview_class="preview-sage",
+        tokens=theme_tokens(
+            ink="#1e2a24",
+            muted="#69736a",
+            paper="#eef1e7",
+            page="#fbfbf4",
+            line="#c6cfbb",
+            line_soft="#dfe5d6",
+            accent="#4f765f",
+            accent_2="#a15e4f",
+            header_bg="#e2eadb",
+            header_text="#203328",
+            footer="#788070",
+            body_font='"Trebuchet MS", "Segoe UI", sans-serif',
+            heading_font='"Cambria", "Georgia", serif',
+        ),
+    ),
+    "graphite_lime": Theme(
+        slug="graphite_lime",
+        label="Graphite lime",
+        css_file="themes/pro_landscape.css",
+        page_size="tablet_landscape_16_10",
+        preview_class="preview-graphite",
+        tokens=theme_tokens(
+            ink="#151719",
+            muted="#656a6d",
+            paper="#f1f1ec",
+            page="#fbfaf5",
+            line="#c8c8bd",
+            line_soft="#deded5",
+            accent="#30363c",
+            accent_2="#b7c847",
+            header_bg="#e5e4df",
+            header_text="#111315",
+            footer="#777974",
+            body_font='"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+            heading_font='"Constantia", "Cambria", serif',
+        ),
+    ),
+    "copper_workshop": Theme(
+        slug="copper_workshop",
+        label="Atelier cuivre",
+        css_file="themes/pro_landscape.css",
+        page_size="tablet_landscape_16_10",
+        preview_class="preview-copper",
+        tokens=theme_tokens(
+            ink="#241d18",
+            muted="#77695f",
+            paper="#f3eadb",
+            page="#fffaf1",
+            line="#d2bfa6",
+            line_soft="#eadcc8",
+            accent="#8c4a2f",
+            accent_2="#27646f",
+            header_bg="#ead9c2",
+            header_text="#2f241c",
+            footer="#8a7a68",
+            body_font='"Georgia", "Cambria", serif',
+            heading_font='"Georgia", "Cambria", serif',
+        ),
     ),
 }
 
@@ -140,6 +253,7 @@ def build_context(request: RenderRequest) -> dict:
             "metadata": metadata,
             "page_format": page_format,
             "layout": layout,
+            "theme_tokens": theme.tokens,
             "row_counts": layout["row_counts"],
             "nav": default_nav(),
             "symbols": SYMBOLS,
@@ -240,7 +354,7 @@ def compute_layout(page_width: int, page_height: int) -> dict:
     header_h = round(max(30, min(52, row_h * 0.48)))
     project_header_h = round(max(26, min(42, project_row_h * 0.58)))
     table_h = max(row_h * 8, table_h)
-    index_row_h = max(24, (table_h - header_h) // 25)
+    index_row_h = max(18, (table_h - header_h) // 25)
 
     def rows(extra_reserved: int = 0, minimum: int = 8, maximum: int = 28) -> int:
         available = max(row_h * minimum, table_h - extra_reserved - header_h)

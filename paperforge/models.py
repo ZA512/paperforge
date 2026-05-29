@@ -13,6 +13,8 @@ class Theme:
     label: str
     css_file: str
     page_size: PageSize = "tablet_landscape_16_10"
+    preview_class: str = ""
+    tokens: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)

@@ -80,16 +80,6 @@
             {% endfor %}
           {% endfor %}
         </div>
-
-        <div class="nomenclature" aria-label="Nomenclature">
-          <span>• Action</span>
-          <span>- Note</span>
-          <span>? Question</span>
-          <span>! Important</span>
-          <span>W Attente</span>
-          <span>B Blocage</span>
-          <span>D Decision</span>
-        </div>
       </section>
 
       <section class="pane theme-pane" aria-labelledby="theme-title">
@@ -102,11 +92,18 @@
           {% set selected = values.get('theme', default_theme) == theme.slug %}
           <label class="theme-choice{% if selected %} is-selected{% endif %}">
             <input type="radio" name="theme" value="{{ theme.slug }}" {% if selected %}checked{% endif %}>
-            <span class="theme-swatch"></span>
-            <span>
-              <strong>{{ theme.label }}</strong>
-              <small>{{ theme.page_size }}</small>
+            <span class="theme-preview {{ theme.preview_class }}" aria-hidden="true">
+              <span class="preview-top"></span>
+              <span class="preview-head"></span>
+              <span class="preview-nav"></span>
+              <span class="preview-title"></span>
+              <span class="preview-name"></span>
+              <span class="preview-objective"></span>
+              <span class="preview-table">
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+              </span>
             </span>
+            <span class="sr-only">{{ theme.label }}</span>
           </label>
           {% endfor %}
         </div>

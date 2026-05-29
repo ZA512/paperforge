@@ -16,6 +16,11 @@ def test_project_management_context_matches_expected_page_blocks():
     assert len(context["index_groups"]) == 4
     assert context["index_groups"][0][0].code == "01"
     assert context["index_groups"][-1][-1].code == "99"
+    assert (
+        context["layout"]["header_h"]
+        + (context["layout"]["index_row_h"] * context["row_counts"]["index"])
+        <= context["layout"]["table_h"]
+    )
 
 
 def test_number_options_are_bounded():
